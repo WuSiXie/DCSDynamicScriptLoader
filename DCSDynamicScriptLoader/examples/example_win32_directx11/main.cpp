@@ -154,6 +154,7 @@ int WinMain(HINSTANCE hinstance,HINSTANCE hprevInstance,LPSTR cmdstr,int code)
             if (NetworkConnectionStatus)
             {
                 ImGui::Text(u8"DCS连接已建立");
+                ImGui::Text(u8"DCS环境："); ImGui::SameLine(); ImGui::Text(Env);
                 DCSScriptLoader();
                 if (ImGui::Button(u8"断开连接##Disconnect"))
                 {

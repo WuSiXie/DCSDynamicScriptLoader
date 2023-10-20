@@ -12,6 +12,7 @@
 #include "networkmoduel.h"
 
 SOCKET ConnectionToServer;
+char Env[10] = "";
 int IsInputValidIPAddress(ImGuiInputTextCallbackData* data)
 {
     if ('9' >= data->EventChar && data->EventChar >= '0' || data->EventChar == '.')
@@ -36,7 +37,7 @@ void CheckPasswd(SOCKET* Connection, bool* PasswdStatus, bool* PasswdErrorPopUpC
 {
     char PasswdCheckBuffer[20] = "";
     ReceiveData(*Connection,PasswdCheckBuffer,sizeof(PasswdCheckBuffer));
-    std::cout << PasswdCheckBuffer << std::endl;
+    //std::cout << PasswdCheckBuffer << std::endl;
     if (!strcmp(PasswdCheckBuffer, u8"Connected"))
     {
         //std::cout << u8"已连接" << std::endl;
@@ -49,6 +50,34 @@ void CheckPasswd(SOCKET* Connection, bool* PasswdStatus, bool* PasswdErrorPopUpC
         *PasswdErrorPopUpComeOut = true;
     }
 }
+bool ConnectionLostPopup = false;
+void ConnectinLostManager()
+{
+    if (ConnectionLostPopup)
+    {
+        ImGui::OpenPopup(u8"连接丢失");
+        if (ImGui::BeginPopup(u8"连接丢失"))
+            ImGui::Text(u8"与服务器的连接丢失");
+        if (ImGui::Button("确定##ConnetionLost"))
+        {
+            ImGui::CloseCurrentPopup();
+            ConnectionLostPopup = false;
+        }
+        ImGui::EndPopup();
+    }
+}
+
+void envreciever(SOCKET* Connection, char* EnvBuffer, int EnvBufferSize)
+{
+    ReceiveData(*Connection, EnvBuffer, EnvBufferSize);
+}
+
+void AskForEnv(SOCKET* Connection, char* EnvData, int EnvDataSize)
+{
+    int SendingStatus = SendData(*Connection, "0 ENV");
+    std::thread envdatareciever(envreciever, Connection, EnvData, EnvDataSize);
+    envdatareciever.detach();
+}
 
 bool ConnectionWindowStatus = true;
 
@@ -58,7 +87,7 @@ void ShowConnectionPage(bool* networkConnectionStatus)
     static bool ConnectionFailedPopUP = false;
     static bool PasswdFalsePopUP = false;
     static char ipInputBuffer[16] = "127.0.0.1";
-    int PortBuffer = 49527;
+    static int PortBuffer = 49527;
     static char Passwd[99] = "995277";
     ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_CallbackCharFilter;
     ImGui::Begin(u8"连接到服务器", &ConnectionWindowStatus);
@@ -95,6 +124,7 @@ void ShowConnectionPage(bool* networkConnectionStatus)
         *networkConnectionStatus = true;
         ConnectionWindowStatus = false;
         PasswdStatus = false;
+        AskForEnv(&ConnectionToServer, Env, sizeof(Env));
     }
     if (ConnectionFailedPopUP)
     {

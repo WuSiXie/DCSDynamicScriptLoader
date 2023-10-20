@@ -27,6 +27,8 @@ void DCSScriptLoader()
             if (LuaScriptSendingStatus == -1)
             {
                 DATASENDFAILEDPOPUP = true;
+                Disconnect(ConnectionToServer);
+                ConnectionLostPopup = true;
             }
             else
             {
