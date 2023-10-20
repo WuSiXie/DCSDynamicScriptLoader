@@ -4,6 +4,7 @@ package.cpath = package.cpath..";.\\LuaSocket\\?.dll;"
 
 local socket = require("socket")
 local coroutine = require("coroutine")
+local lfs = require("lfs")
 
 -- 创建服务器套接字
 local server = socket.bind("0.0.0.0", 49527)  -- 在所有网络接口上监听端口 49527
@@ -12,7 +13,11 @@ server:settimeout(0)  -- 设置为非阻塞模式
 -- 存储已连接的客户端
 local scriptLoader = {}
 scriptLoader.PasswdTimeOut = 5
-scriptLoader.Passwd = "995277"
+--scriptLoader.Passwd = "995277" --不建议将密码写在任务脚本里
+gpasswd = ""
+dofile(lfs.currentdir().."ScriptLoaderPasswd\\passwd.lua") --请把ScriptLoaderPasswd文件夹放到游戏根目录里
+scriptLoader.Passwd = gpasswd
+gpasswd = nil
 scriptLoader.clients = {}
 scriptLoader.clientsWithoutPsswd = {}
 scriptLoader.clientsWithoutPsswdInitTime = {}
