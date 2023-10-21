@@ -11,6 +11,7 @@
 //网络模块
 #include "networkmoduel.h"
 
+bool ConnectionLostPopup = false;
 SOCKET ConnectionToServer;
 char Env[10] = "";
 int IsInputValidIPAddress(ImGuiInputTextCallbackData* data)
@@ -50,7 +51,7 @@ void CheckPasswd(SOCKET* Connection, bool* PasswdStatus, bool* PasswdErrorPopUpC
         *PasswdErrorPopUpComeOut = true;
     }
 }
-bool ConnectionLostPopup = false;
+
 void ConnectinLostManager()
 {
     if (ConnectionLostPopup)
@@ -62,6 +63,7 @@ void ConnectinLostManager()
         {
             ImGui::CloseCurrentPopup();
             ConnectionLostPopup = false;
+
         }
         ImGui::EndPopup();
     }
