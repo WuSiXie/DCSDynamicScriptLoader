@@ -50,7 +50,7 @@ class unit
 class tasksForGroup
 {
     tasksForGroup* PrevTask = nullptr;
-    char* OthertaskContent = new char[1024]();
+    char* taskContent = new char[1024]();
     tasksForGroup* NextTask = nullptr;
 };
 class AirPlaneGroupInfo
