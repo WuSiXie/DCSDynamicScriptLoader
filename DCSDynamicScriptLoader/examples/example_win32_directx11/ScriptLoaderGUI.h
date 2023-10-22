@@ -6,22 +6,23 @@
 #include <sstream>
 #include <vector>
 #include "networkmoduel.h"
+
 void DCSScriptLoader()
 {
 
     static ImGuiInputTextFlags LuaScriptInputflags = ImGuiInputTextFlags_AllowTabInput;
     static bool ScriptLoaderON = false;
-    static char ScriptBuffer[1024*4-5] = "";
+    static char* ScriptBuffer = new char[1024*1024-5];
     static bool DATASENDFAILEDPOPUP = false;
     static bool DATASENDSUCCEEDPOPUP = false;
     ImGui::Checkbox(u8"脚本加载器##ScriptLoaderONCheck", &ScriptLoaderON);
     if (ScriptLoaderON)
     {
         ImGui::Begin(u8"DCS脚本加载器", &ScriptLoaderON);
-        ImGui::InputTextMultiline("##LuaScriptsInput", ScriptBuffer, sizeof(ScriptBuffer), ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 20), LuaScriptInputflags);
+        ImGui::InputTextMultiline("##LuaScriptsInput", ScriptBuffer, 1024 * 1024 - 5, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 20), LuaScriptInputflags);
         if (ImGui::Button(u8"发送##SendLuaScript"))
         {
-            static char LuaDataToSend[sizeof(ScriptBuffer)+5] = "1 ";
+            static char* LuaDataToSend = new char[1024 * 1024]{ "1 " };
             strcat(LuaDataToSend, ScriptBuffer);
             int LuaScriptSendingStatus = SendData(ConnectionToServer, LuaDataToSend);
             if (LuaScriptSendingStatus == -1)

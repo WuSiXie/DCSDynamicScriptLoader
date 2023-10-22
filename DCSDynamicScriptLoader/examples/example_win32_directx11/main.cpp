@@ -15,6 +15,7 @@
 #include "ScriptLoaderGUI.h"
 #include <iostream>
 #include <windows.h>
+#include "GroupCreateGUI.h"
 
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
@@ -33,8 +34,8 @@ void CleanupRenderTarget();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 // Main code
-int WinMain(HINSTANCE hinstance,HINSTANCE hprevInstance,LPSTR cmdstr,int code)
-//int main()
+//int WinMain(HINSTANCE hinstance,HINSTANCE hprevInstance,LPSTR cmdstr,int code)
+int main()
 {
     SetConsoleOutputCP(CP_UTF8);
     // Create application window
@@ -99,10 +100,6 @@ int WinMain(HINSTANCE hinstance,HINSTANCE hprevInstance,LPSTR cmdstr,int code)
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    wchar_t DirectoryBuffer[MAX_PATH];
-
-    GetCurrentDirectory(MAX_PATH, DirectoryBuffer);
-    strcat((char*)DirectoryBuffer, "\\CNFont4.TTF");
 
     ImFont* font = io.Fonts->AddFontFromFileTTF("Fonts/CNFont4.TTF", 30.0f, nullptr, io.Fonts->GetGlyphRangesChineseFull());
     //IM_ASSERT(font != nullptr);

@@ -33,6 +33,9 @@
     <ClInclude Include="ScriptLoaderGUI.h">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="GroupCreateGUI.h">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
