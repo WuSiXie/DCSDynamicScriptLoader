@@ -8,20 +8,24 @@
 #include "networkmoduel.h"
 class pointTasks
 {
+public:
     char* otherPointTasks = new char[1024]();
 };
 class points
 {
+public:
     pointTasks pointTasksForPoints;
 };
 class singlePylon
 {
+public:
     singlePylon* PrevPylon = nullptr;
     char* WeaponType = new char[20]();
     singlePylon* NextPylon = nullptr;
 };
 class unitPayload
 {
+public:
     singlePylon unitPayloads;
     int fuel = 5000;
     int flare = 10;
@@ -30,6 +34,7 @@ class unitPayload
 };
 class unit
 {
+public:
     unit* Prevunit = nullptr;
     char* alt = new char[10] {"2000"};
     char* alt_type = new char[10] {"BARO"};
@@ -49,6 +54,7 @@ class unit
 };
 class tasksForGroup
 {
+public:
     tasksForGroup* PrevTask = nullptr;
     char* taskContent = new char[1024]();
     tasksForGroup* NextTask = nullptr;
@@ -69,18 +75,30 @@ public:
 void CreateGroup()
 {
     static bool CreateGroupON = false;
-    ImGui::Checkbox(u8"¹Ì¶¨ÒíÈº×é´´½¨Æ÷", &CreateGroupON);
-    ImGui::Begin(u8"¹Ì¶¨ÒíÈº×é´´½¨Æ÷##Window", &CreateGroupON);
+    ImGui::Checkbox(u8"å›ºå®šç¿¼ç¾¤ç»„åˆ›å»ºå™¨", &CreateGroupON);
+    ImGui::Begin(u8"å›ºå®šç¿¼ç¾¤ç»„åˆ›å»ºå™¨##Window", &CreateGroupON);
     static AirPlaneGroupInfo GroupToCreate;
-    ImGui::Text(u8"Èº×éËùÊô¹ú´úºÅ£º"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.country,10);
-    ImGui::Text(u8"Èº×éÆµÂÊ£º"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.frequency,10);
-    ImGui::Text(u8"modulation(²»ÖªµÀÇëÌî0)£º"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.modulation,2);
+    ImGui::Text(u8"ç¾¤ç»„æ‰€å±å›½ä»£å·ï¼š"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.country,10);
+    ImGui::Text(u8"ç¾¤ç»„é¢‘ç‡ï¼š"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.frequency,10);
+    ImGui::Text(u8"modulation(ä¸çŸ¥é“è¯·å¡«0)ï¼š"); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.modulation,2);
     static bool OtherParams = false;
-    ImGui::Checkbox(u8"Èº×éÆäËû²ÎÊı", &OtherParams);
+    ImGui::Checkbox(u8"ç¾¤ç»„å…¶ä»–å‚æ•°", &OtherParams);
     if (OtherParams)
     {
-        ImGui::Text(u8"ÆäËûÈº×é²ÎÊı##otherparams");
+        ImGui::Text(u8"å…¶ä»–ç¾¤ç»„å‚æ•°##otherparams");
         ImGui::InputTextMultiline("##OtherParams", GroupToCreate.OtherParams, 1024);
+    }
+    static bool GroupInitTask = false;
+    ImGui::Checkbox(u8"ç¾¤ç»„åˆå§‹ä»»åŠ¡", &GroupInitTask);
+    if (GroupInitTask)
+    {
+        ImGui::Text(u8"ç¾¤ç»„åˆå§‹ä»»åŠ¡##GroupInitTasks");
+        ImGui::InputTextMultiline("##OtherParams", GroupToCreate.tasksForAirGroup.taskContent, 1024);
+        tasksForGroup* tasksForGroupnow = &GroupToCreate.tasksForAirGroup;
+        if (ImGui::Button("æ·»åŠ ç¾¤ç»„åˆå§‹ä»»åŠ¡"))
+        {
+
+        }
     }
     ImGui::End();
 }
