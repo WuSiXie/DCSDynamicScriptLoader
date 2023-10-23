@@ -9,7 +9,9 @@
 class pointTasks
 {
 public:
-    char* otherPointTasks = new char[1024]();
+    pointTasks* PrevPointTasks = nullptr;
+    char* PointTasks = new char[1024]();
+    pointTasks* NextPointTasks = nullptr;
 };
 class points
 {
@@ -44,8 +46,8 @@ public:
     char* type = new char[10]();
     char* onboard_num = new char[10]();
     bool useLL = false;
-    int y = 0;
-    int x = 0;
+    double y = 0;
+    double x = 0;
     char* name = new char[30]();
     int heading = 0;
     char* callsign = new char[30]();
