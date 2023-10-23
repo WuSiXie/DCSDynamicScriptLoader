@@ -64,7 +64,7 @@ class AirPlaneGroupInfo
 public:
     char* country = new char[10]();
     char* frequency = new char[10] {"305"};
-    char* modulation = new char[2] {"0"};
+    char* modulation = new char[10] {"0"};
     char* OtherParams = new char[1024]();
     const int unitNumbLimit = 4;
     tasksForGroup tasksForAirGroup;
@@ -78,27 +78,17 @@ void CreateGroup()
     ImGui::Checkbox(u8"固定翼群组创建器", &CreateGroupON);
     ImGui::Begin(u8"固定翼群组创建器##Window", &CreateGroupON);
     static AirPlaneGroupInfo GroupToCreate;
-    ImGui::Text(u8"群组所属国代号："); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.country,10);
-    ImGui::Text(u8"群组频率："); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.frequency,10);
-    ImGui::Text(u8"modulation(不知道请填0)："); ImGui::SameLine; ImGui::InputText("##GroupCountry:", GroupToCreate.modulation,2);
+    ImGui::Text(u8"群组所属国代号:"); ImGui::SameLine(); ImGui::InputText("##GroupCountry:", GroupToCreate.country, 10);
+    ImGui::Text(u8"群组频率:"); ImGui::SameLine(); ImGui::InputText("##GroupCountry:", GroupToCreate.frequency, 10);
+    ImGui::Text(u8"modulation(不知道请填0):"); ImGui::SameLine(); ImGui::InputText("##GroupCountry:", GroupToCreate.modulation, 10);
     static bool OtherParams = false;
-    ImGui::Checkbox(u8"群组其他参数", &OtherParams);
+    ImGui::Checkbox(u8"输入群组其他参数", &OtherParams);
     if (OtherParams)
     {
         ImGui::Text(u8"其他群组参数##otherparams");
         ImGui::InputTextMultiline("##OtherParams", GroupToCreate.OtherParams, 1024);
     }
-    static bool GroupInitTask = false;
-    ImGui::Checkbox(u8"群组初始任务", &GroupInitTask);
-    if (GroupInitTask)
-    {
-        ImGui::Text(u8"群组初始任务##GroupInitTasks");
-        ImGui::InputTextMultiline("##OtherParams", GroupToCreate.tasksForAirGroup.taskContent, 1024);
-        tasksForGroup* tasksForGroupnow = &GroupToCreate.tasksForAirGroup;
-        if (ImGui::Button("添加群组初始任务"))
-        {
-
-        }
-    }
+    ImGui::Text(u8"群组任务类型:"); ImGui::SameLine(); ImGui::InputText("##GroupTaskk:", GroupToCreate.task, 10);
+    ImGui::Checkbox("仅限管理员##AirGroupAdminOnly", &GroupToCreate.unctrolled);
     ImGui::End();
 }
