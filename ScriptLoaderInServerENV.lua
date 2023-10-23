@@ -26,20 +26,29 @@ scriptLoader.Enviorment = "Server"
 local receiver = coroutine.create(function()
 	while true do
 		for i, client in ipairs(scriptLoader.clients) do
-			--net.log("Try revieveDATA")
-			local data, err ,anotherDATA= client:receive(1024*4)
+			--trigger.action.outText("Try RecieveDATA",5,false)
+			local data, err ,anotherDATA = client:receive(1024*4)
 			if (data or anotherDATA) then
 				local moduleId = ""
 				local message = ""
 				if (data) then
-					net.log("data:"..data)
 					--trigger.action.outText(data,5,false)
 					moduleId, message = string.match(data, "^(.-) (.+)$")
-
+					while true do
+						local data1, err1, anotherDATA1 = client:receive(1024*4)
+						if (anotherDATA1) then
+							message = message..anotherDATA1
+							break
+						elseif data1 then
+							message = message..data1
+						else
+							break
+						end
+					end
 				elseif(anotherDATA) then
 					if (anotherDATA ~= "") then
 						--trigger.action.outText(anotherDATA,5,false)
-						net.log("anotherDATA:"..anotherDATA)
+						--net.log("anotherDATA:"..anotherDATA)
 						moduleId, message = string.match(anotherDATA, "^(.-) (.+)$")
 					end
 				end
@@ -55,12 +64,8 @@ local receiver = coroutine.create(function()
 						client:send(scriptLoader.Enviorment)
 					end
 				end
-			else
-				net.log(err)
 			end
-			if data then
-				-- 处理接收到的数据
-			elseif err == "closed" then
+			if err == "closed" then
 				-- 客户端关闭连接
 				table.remove(scriptLoader.clients, i)
 			end

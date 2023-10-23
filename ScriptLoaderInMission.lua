@@ -31,13 +31,24 @@ local receiver = coroutine.create(function()
 		--trigger.action.outText("Try RecieveDATAO",5,false)
 		for i, client in ipairs(scriptLoader.clients) do
 			--trigger.action.outText("Try RecieveDATA",5,false)
-			local data, err ,anotherDATA= client:receive(1024*4)
+			local data, err ,anotherDATA = client:receive(1024*4)
 			if (data or anotherDATA) then
 				local moduleId = ""
 				local message = ""
 				if (data) then
 					--trigger.action.outText(data,5,false)
 					moduleId, message = string.match(data, "^(.-) (.+)$")
+					while true do
+						local data1, err1, anotherDATA1 = client:receive(1024*4)
+						if (anotherDATA1) then
+							message = message..anotherDATA1
+							break
+						elseif data1 then
+							message = message..data1
+						else
+							break
+						end
+					end
 				elseif(anotherDATA) then
 					if (anotherDATA ~= "") then
 						--trigger.action.outText(anotherDATA,5,false)
