@@ -71,6 +71,7 @@ void ConnectinLostManager()
 
 void envreciever(SOCKET* Connection, char* EnvBuffer, int EnvBufferSize)
 {
+    memset(EnvBuffer, 0, sizeof(Env));
     ReceiveData(*Connection, EnvBuffer, EnvBufferSize);
 }
 

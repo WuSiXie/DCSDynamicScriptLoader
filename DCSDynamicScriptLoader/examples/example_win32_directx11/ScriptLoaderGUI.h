@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include "networkmoduel.h"
+#include "NetworkGUI.h"
 
 void DCSScriptLoader()
 {
@@ -15,14 +16,32 @@ void DCSScriptLoader()
     static char* ScriptBuffer = new char[1024*1024-5];
     static bool DATASENDFAILEDPOPUP = false;
     static bool DATASENDSUCCEEDPOPUP = false;
+    static bool LoadSCinMission = false;
     ImGui::Checkbox(u8"脚本加载器##ScriptLoaderONCheck", &ScriptLoaderON);
     if (ScriptLoaderON)
     {
         ImGui::Begin(u8"DCS脚本加载器", &ScriptLoaderON);
+        if (!strcmp(Env, "Server"))
+        {
+            ImGui::Checkbox("在任务环境加载脚本", &LoadSCinMission);
+            ImGui::Text("由于ED的BUG，该选项在专用服务器和以服务器模式运行的DCS中可能无效");
+        }
+        else 
+        {
+            LoadSCinMission = false;
+        }
         ImGui::InputTextMultiline("##LuaScriptsInput", ScriptBuffer, 1024 * 1024 - 5, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 20), LuaScriptInputflags);
         if (ImGui::Button(u8"发送##SendLuaScript"))
         {
-            static char* LuaDataToSend = new char[1024 * 1024]{ "1 " };
+            static char* LuaDataToSend = new char[1024 * 1024]();
+            if (LoadSCinMission)
+            {
+                strcpy(LuaDataToSend, "2 ");
+            }
+            else
+            {
+                strcpy(LuaDataToSend, "1 ");
+            }
             strcat(LuaDataToSend, ScriptBuffer);
             int LuaScriptSendingStatus = SendData(ConnectionToServer, LuaDataToSend);
             if (LuaScriptSendingStatus == -1)
@@ -35,7 +54,7 @@ void DCSScriptLoader()
             {
                 DATASENDSUCCEEDPOPUP = true;
                 ScriptBuffer[0] = '\0';
-                strcpy(LuaDataToSend, "1 ");
+                LuaDataToSend[0] = '\0';
             }
 
         }
