@@ -14,5 +14,6 @@ end
 --]]  
 如果想要加载到服务器环境中则不需要注释MissionScripting.lua也不需要将ScriptLoaderInMission.lua加载至任务环境  
 只需将ScriptLoaderInServerENV.lua放到保存的游戏\DCS\scripts\Hooks中  
+由于ED的BUG，有些情况下Server环境中可能无法执行Mission环境的代码  
 Dear ImGui:  
 https://github.com/ocornut/imgui
